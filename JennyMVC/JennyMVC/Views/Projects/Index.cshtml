@@ -1,0 +1,76 @@
+﻿@model IEnumerable<JennyMVC.Project>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Projects</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.Label("Project Name")
+        </th>
+        <th>
+            @Html.Label("Predicted Start")
+        </th>
+        <th>
+            @Html.Label("Predicted Finish")
+        </th>
+        <th>
+            @Html.Label("Actual Start")
+        </th>
+        <th>
+            @Html.Label("Actual Finish")
+        </th>
+        <th>
+            @Html.Label("Predicted Cost")
+        </th>
+        <th>
+            @Html.Label("Actual Cost")
+        </th>
+        <th>
+            @Html.Label("Associated Client")
+        </th>
+        
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.project_name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.pred_start)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.pred_finish)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.act_start)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.act_finish)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.pred_cost)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.act_cost)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Client.client_name)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.projectId }) |
+            @Html.ActionLink("Details", "Details", new { id=item.projectId }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.projectId })
+        </td>
+    </tr>
+}
+
+</table>

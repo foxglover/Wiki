@@ -1,0 +1,58 @@
+﻿@model JennyMVC.Staff
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Staff</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.Label("Staff Email")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.staff_email)
+        </dd>
+
+        <dt>
+            @Html.Label("Are they contract staff?")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.is_contract)
+        </dd>
+
+        <dt>
+            @Html.Label("First Name")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.first_name)
+        </dd>
+
+        <dt>
+            @Html.Label("Last Night")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.last_name)
+        </dd>
+
+        <dt>
+            @Html.Label("Job Title")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.job_title)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.staffID }) |
+    @Html.ActionLink("Back to Staff List", "Index")
+</p>

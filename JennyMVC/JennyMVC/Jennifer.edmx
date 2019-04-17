@@ -1,0 +1,426 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="JenniferModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Activity">
+          <Key>
+            <PropertyRef Name="activityID" />
+          </Key>
+          <Property Name="activityID" Type="smallint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="projectID" Type="smallint" Nullable="false" />
+          <Property Name="activity_name" Type="nchar" MaxLength="50" />
+          <Property Name="staffID" Type="smallint" />
+          <Property Name="pred_start" Type="date" />
+          <Property Name="pred_finish" Type="date" />
+          <Property Name="act_start" Type="date" />
+          <Property Name="act_finish" Type="date" />
+          <Property Name="pred_cost" Type="int" />
+          <Property Name="act_cost" Type="int" />
+          <Property Name="activity_sequence_no" Type="int" />
+        </EntityType>
+        <EntityType Name="Assignment">
+          <Key>
+            <PropertyRef Name="taskID" />
+          </Key>
+          <Property Name="taskID" Type="smallint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="staffID" Type="smallint" Nullable="false" />
+          <Property Name="task_name" Type="nvarchar" MaxLength="50" />
+          <Property Name="activityID" Type="smallint" Nullable="false" />
+          <Property Name="pred_start" Type="date" />
+          <Property Name="act_start" Type="date" />
+          <Property Name="pred_finish" Type="date" />
+          <Property Name="act_finish" Type="date" />
+          <Property Name="pred_cost" Type="int" />
+          <Property Name="act_cost" Type="int" />
+          <Property Name="task_sequence" Type="smallint" />
+        </EntityType>
+        <EntityType Name="Client">
+          <Key>
+            <PropertyRef Name="clientId" />
+          </Key>
+          <Property Name="clientId" Type="smallint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="client_name" Type="nchar" MaxLength="50" Nullable="false" />
+          <Property Name="client_contact" Type="nchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Project">
+          <Key>
+            <PropertyRef Name="projectId" />
+          </Key>
+          <Property Name="projectId" Type="smallint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="clientId" Type="smallint" Nullable="false" />
+          <Property Name="project_name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="pred_start" Type="date" />
+          <Property Name="pred_finish" Type="date" />
+          <Property Name="act_start" Type="date" />
+          <Property Name="act_finish" Type="date" />
+          <Property Name="pred_cost" Type="int" />
+          <Property Name="act_cost" Type="int" />
+        </EntityType>
+        <EntityType Name="Staff">
+          <Key>
+            <PropertyRef Name="staffID" />
+          </Key>
+          <Property Name="staffID" Type="smallint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="staff_email" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="is_contract" Type="tinyint" Nullable="false" />
+          <Property Name="first_name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="last_name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="job_title" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Activity_ToProject">
+          <End Role="Project" Type="Self.Project" Multiplicity="1" />
+          <End Role="Activity" Type="Self.Activity" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Project">
+              <PropertyRef Name="projectId" />
+            </Principal>
+            <Dependent Role="Activity">
+              <PropertyRef Name="projectID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Activity_ToStaff">
+          <End Role="Staff" Type="Self.Staff" Multiplicity="0..1" />
+          <End Role="Activity" Type="Self.Activity" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Staff">
+              <PropertyRef Name="staffID" />
+            </Principal>
+            <Dependent Role="Activity">
+              <PropertyRef Name="staffID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Assignment_ToActivity">
+          <End Role="Activity" Type="Self.Activity" Multiplicity="1" />
+          <End Role="Assignment" Type="Self.Assignment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Activity">
+              <PropertyRef Name="activityID" />
+            </Principal>
+            <Dependent Role="Assignment">
+              <PropertyRef Name="activityID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Assignment_ToStaff">
+          <End Role="Staff" Type="Self.Staff" Multiplicity="1" />
+          <End Role="Assignment" Type="Self.Assignment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Staff">
+              <PropertyRef Name="staffID" />
+            </Principal>
+            <Dependent Role="Assignment">
+              <PropertyRef Name="staffID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Project_ToClient">
+          <End Role="Client" Type="Self.Client" Multiplicity="1" />
+          <End Role="Project" Type="Self.Project" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Client">
+              <PropertyRef Name="clientId" />
+            </Principal>
+            <Dependent Role="Project">
+              <PropertyRef Name="clientId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="JenniferModelStoreContainer">
+          <EntitySet Name="Activity" EntityType="Self.Activity" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Assignment" EntityType="Self.Assignment" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Client" EntityType="Self.Client" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Project" EntityType="Self.Project" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Staff" EntityType="Self.Staff" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Activity_ToProject" Association="Self.FK_Activity_ToProject">
+            <End Role="Project" EntitySet="Project" />
+            <End Role="Activity" EntitySet="Activity" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Activity_ToStaff" Association="Self.FK_Activity_ToStaff">
+            <End Role="Staff" EntitySet="Staff" />
+            <End Role="Activity" EntitySet="Activity" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Assignment_ToActivity" Association="Self.FK_Assignment_ToActivity">
+            <End Role="Activity" EntitySet="Activity" />
+            <End Role="Assignment" EntitySet="Assignment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Assignment_ToStaff" Association="Self.FK_Assignment_ToStaff">
+            <End Role="Staff" EntitySet="Staff" />
+            <End Role="Assignment" EntitySet="Assignment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Project_ToClient" Association="Self.FK_Project_ToClient">
+            <End Role="Client" EntitySet="Client" />
+            <End Role="Project" EntitySet="Project" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="JenniferModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Activity">
+          <Key>
+            <PropertyRef Name="activityID" />
+          </Key>
+          <Property Name="activityID" Type="Int16" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="projectID" Type="Int16" Nullable="false" />
+          <Property Name="activity_name" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+          <Property Name="staffID" Type="Int16" />
+          <Property Name="pred_start" Type="DateTime" Precision="0" />
+          <Property Name="pred_finish" Type="DateTime" Precision="0" />
+          <Property Name="act_start" Type="DateTime" Precision="0" />
+          <Property Name="act_finish" Type="DateTime" Precision="0" />
+          <Property Name="pred_cost" Type="Int32" />
+          <Property Name="act_cost" Type="Int32" />
+          <Property Name="activity_sequence_no" Type="Int32" />
+          <NavigationProperty Name="Project" Relationship="Self.FK_Activity_ToProject" FromRole="Activity" ToRole="Project" />
+          <NavigationProperty Name="Staff" Relationship="Self.FK_Activity_ToStaff" FromRole="Activity" ToRole="Staff" />
+          <NavigationProperty Name="Assignments" Relationship="Self.FK_Assignment_ToActivity" FromRole="Activity" ToRole="Assignment" />
+        </EntityType>
+        <EntityType Name="Assignment">
+          <Key>
+            <PropertyRef Name="taskID" />
+          </Key>
+          <Property Name="taskID" Type="Int16" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="staffID" Type="Int16" Nullable="false" />
+          <Property Name="task_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="activityID" Type="Int16" Nullable="false" />
+          <Property Name="pred_start" Type="DateTime" Precision="0" />
+          <Property Name="act_start" Type="DateTime" Precision="0" />
+          <Property Name="pred_finish" Type="DateTime" Precision="0" />
+          <Property Name="act_finish" Type="DateTime" Precision="0" />
+          <Property Name="pred_cost" Type="Int32" />
+          <Property Name="act_cost" Type="Int32" />
+          <Property Name="task_sequence" Type="Int16" />
+          <NavigationProperty Name="Activity" Relationship="Self.FK_Assignment_ToActivity" FromRole="Assignment" ToRole="Activity" />
+          <NavigationProperty Name="Staff" Relationship="Self.FK_Assignment_ToStaff" FromRole="Assignment" ToRole="Staff" />
+        </EntityType>
+        <EntityType Name="Client">
+          <Key>
+            <PropertyRef Name="clientId" />
+          </Key>
+          <Property Name="clientId" Type="Int16" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="client_name" Type="String" MaxLength="50" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="client_contact" Type="String" MaxLength="50" FixedLength="true" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Projects" Relationship="Self.FK_Project_ToClient" FromRole="Client" ToRole="Project" />
+        </EntityType>
+        <EntityType Name="Project">
+          <Key>
+            <PropertyRef Name="projectId" />
+          </Key>
+          <Property Name="projectId" Type="Int16" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="clientId" Type="Int16" Nullable="false" />
+          <Property Name="project_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="pred_start" Type="DateTime" Precision="0" />
+          <Property Name="pred_finish" Type="DateTime" Precision="0" />
+          <Property Name="act_start" Type="DateTime" Precision="0" />
+          <Property Name="act_finish" Type="DateTime" Precision="0" />
+          <Property Name="pred_cost" Type="Int32" />
+          <Property Name="act_cost" Type="Int32" />
+          <NavigationProperty Name="Activities" Relationship="Self.FK_Activity_ToProject" FromRole="Project" ToRole="Activity" />
+          <NavigationProperty Name="Client" Relationship="Self.FK_Project_ToClient" FromRole="Project" ToRole="Client" />
+        </EntityType>
+        <EntityType Name="Staff">
+          <Key>
+            <PropertyRef Name="staffID" />
+          </Key>
+          <Property Name="staffID" Type="Int16" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="staff_email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="is_contract" Type="Byte" Nullable="false" />
+          <Property Name="first_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="last_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="job_title" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Activities" Relationship="Self.FK_Activity_ToStaff" FromRole="Staff" ToRole="Activity" />
+          <NavigationProperty Name="Assignments" Relationship="Self.FK_Assignment_ToStaff" FromRole="Staff" ToRole="Assignment" />
+        </EntityType>
+        <Association Name="FK_Activity_ToProject">
+          <End Role="Project" Type="Self.Project" Multiplicity="1" />
+          <End Role="Activity" Type="Self.Activity" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Project">
+              <PropertyRef Name="projectId" />
+            </Principal>
+            <Dependent Role="Activity">
+              <PropertyRef Name="projectID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Activity_ToStaff">
+          <End Role="Staff" Type="Self.Staff" Multiplicity="0..1" />
+          <End Role="Activity" Type="Self.Activity" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Staff">
+              <PropertyRef Name="staffID" />
+            </Principal>
+            <Dependent Role="Activity">
+              <PropertyRef Name="staffID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Assignment_ToActivity">
+          <End Role="Activity" Type="Self.Activity" Multiplicity="1" />
+          <End Role="Assignment" Type="Self.Assignment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Activity">
+              <PropertyRef Name="activityID" />
+            </Principal>
+            <Dependent Role="Assignment">
+              <PropertyRef Name="activityID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Assignment_ToStaff">
+          <End Role="Staff" Type="Self.Staff" Multiplicity="1" />
+          <End Role="Assignment" Type="Self.Assignment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Staff">
+              <PropertyRef Name="staffID" />
+            </Principal>
+            <Dependent Role="Assignment">
+              <PropertyRef Name="staffID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Project_ToClient">
+          <End Role="Client" Type="Self.Client" Multiplicity="1" />
+          <End Role="Project" Type="Self.Project" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Client">
+              <PropertyRef Name="clientId" />
+            </Principal>
+            <Dependent Role="Project">
+              <PropertyRef Name="clientId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="JenniferEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Activities" EntityType="Self.Activity" />
+          <EntitySet Name="Assignments" EntityType="Self.Assignment" />
+          <EntitySet Name="Clients" EntityType="Self.Client" />
+          <EntitySet Name="Projects" EntityType="Self.Project" />
+          <EntitySet Name="Staffs" EntityType="Self.Staff" />
+          <AssociationSet Name="FK_Activity_ToProject" Association="Self.FK_Activity_ToProject">
+            <End Role="Project" EntitySet="Projects" />
+            <End Role="Activity" EntitySet="Activities" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Activity_ToStaff" Association="Self.FK_Activity_ToStaff">
+            <End Role="Staff" EntitySet="Staffs" />
+            <End Role="Activity" EntitySet="Activities" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Assignment_ToActivity" Association="Self.FK_Assignment_ToActivity">
+            <End Role="Activity" EntitySet="Activities" />
+            <End Role="Assignment" EntitySet="Assignments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Assignment_ToStaff" Association="Self.FK_Assignment_ToStaff">
+            <End Role="Staff" EntitySet="Staffs" />
+            <End Role="Assignment" EntitySet="Assignments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Project_ToClient" Association="Self.FK_Project_ToClient">
+            <End Role="Client" EntitySet="Clients" />
+            <End Role="Project" EntitySet="Projects" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="JenniferModelStoreContainer" CdmEntityContainer="JenniferEntities">
+          <EntitySetMapping Name="Activities">
+            <EntityTypeMapping TypeName="JenniferModel.Activity">
+              <MappingFragment StoreEntitySet="Activity">
+                <ScalarProperty Name="activityID" ColumnName="activityID" />
+                <ScalarProperty Name="projectID" ColumnName="projectID" />
+                <ScalarProperty Name="activity_name" ColumnName="activity_name" />
+                <ScalarProperty Name="staffID" ColumnName="staffID" />
+                <ScalarProperty Name="pred_start" ColumnName="pred_start" />
+                <ScalarProperty Name="pred_finish" ColumnName="pred_finish" />
+                <ScalarProperty Name="act_start" ColumnName="act_start" />
+                <ScalarProperty Name="act_finish" ColumnName="act_finish" />
+                <ScalarProperty Name="pred_cost" ColumnName="pred_cost" />
+                <ScalarProperty Name="act_cost" ColumnName="act_cost" />
+                <ScalarProperty Name="activity_sequence_no" ColumnName="activity_sequence_no" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Assignments">
+            <EntityTypeMapping TypeName="JenniferModel.Assignment">
+              <MappingFragment StoreEntitySet="Assignment">
+                <ScalarProperty Name="taskID" ColumnName="taskID" />
+                <ScalarProperty Name="staffID" ColumnName="staffID" />
+                <ScalarProperty Name="task_name" ColumnName="task_name" />
+                <ScalarProperty Name="activityID" ColumnName="activityID" />
+                <ScalarProperty Name="pred_start" ColumnName="pred_start" />
+                <ScalarProperty Name="act_start" ColumnName="act_start" />
+                <ScalarProperty Name="pred_finish" ColumnName="pred_finish" />
+                <ScalarProperty Name="act_finish" ColumnName="act_finish" />
+                <ScalarProperty Name="pred_cost" ColumnName="pred_cost" />
+                <ScalarProperty Name="act_cost" ColumnName="act_cost" />
+                <ScalarProperty Name="task_sequence" ColumnName="task_sequence" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Clients">
+            <EntityTypeMapping TypeName="JenniferModel.Client">
+              <MappingFragment StoreEntitySet="Client">
+                <ScalarProperty Name="clientId" ColumnName="clientId" />
+                <ScalarProperty Name="client_name" ColumnName="client_name" />
+                <ScalarProperty Name="client_contact" ColumnName="client_contact" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Projects">
+            <EntityTypeMapping TypeName="JenniferModel.Project">
+              <MappingFragment StoreEntitySet="Project">
+                <ScalarProperty Name="projectId" ColumnName="projectId" />
+                <ScalarProperty Name="clientId" ColumnName="clientId" />
+                <ScalarProperty Name="project_name" ColumnName="project_name" />
+                <ScalarProperty Name="pred_start" ColumnName="pred_start" />
+                <ScalarProperty Name="pred_finish" ColumnName="pred_finish" />
+                <ScalarProperty Name="act_start" ColumnName="act_start" />
+                <ScalarProperty Name="act_finish" ColumnName="act_finish" />
+                <ScalarProperty Name="pred_cost" ColumnName="pred_cost" />
+                <ScalarProperty Name="act_cost" ColumnName="act_cost" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Staffs">
+            <EntityTypeMapping TypeName="JenniferModel.Staff">
+              <MappingFragment StoreEntitySet="Staff">
+                <ScalarProperty Name="staffID" ColumnName="staffID" />
+                <ScalarProperty Name="staff_email" ColumnName="staff_email" />
+                <ScalarProperty Name="is_contract" ColumnName="is_contract" />
+                <ScalarProperty Name="first_name" ColumnName="first_name" />
+                <ScalarProperty Name="last_name" ColumnName="last_name" />
+                <ScalarProperty Name="job_title" ColumnName="job_title" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

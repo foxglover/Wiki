@@ -1,0 +1,61 @@
+﻿@model IEnumerable<JennyMVC.Staff>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Staff</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+
+        <th>
+            @Html.Label("First Name")
+        </th>
+        <th>
+            @Html.Label("Last Name")
+        </th>
+        <th>
+            @Html.Label("Email")
+        </th>
+        <th>
+            @Html.Label("Are they Contract?")
+        </th>
+       
+        <th>
+            @Html.Label("Job title")
+        </th>
+
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.first_name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.last_name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.staff_email)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.is_contract)
+        </td>
+        
+        <td>
+            @Html.DisplayFor(modelItem => item.job_title)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id = item.staffID }) |
+            @Html.ActionLink("Details", "Details", new { id = item.staffID }) |
+            @Html.ActionLink("Delete", "Delete", new { id = item.staffID })
+        </td>
+    </tr>
+}
+
+</table>

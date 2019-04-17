@@ -1,0 +1,88 @@
+﻿@model IEnumerable<JennyMVC.Activity>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Activities</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.Label("Activity Name")
+        </th>
+        <th>
+            @Html.Label("Predicted Start")
+        </th>
+        <th>
+            @Html.Label("Predicted Finish")
+        </th>
+        <th>
+            @Html.Label("Actual Start")
+        </th>
+        <th>
+            @Html.Label("Actual Finish")
+        </th>
+        <th>
+            @Html.Label("Predicted Cost")
+        </th>
+        <th>
+            @Html.Label("Actual Cost")
+        </th>
+        <th>
+            @Html.Label("Sequence Number")
+        </th>
+        <th>
+            @Html.Label("Associated Project")
+        </th>
+        
+        <th>
+            @Html.Label("Staff Email")
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.activity_name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.pred_start)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.pred_finish)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.act_start)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.act_finish)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.pred_cost)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.act_cost)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.activity_sequence_no)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Project.project_name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Staff.staff_email)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.activityID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.activityID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.activityID })
+        </td>
+    </tr>
+}
+
+</table>
